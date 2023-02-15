@@ -1,0 +1,196 @@
+<div id="addNew-users">
+  <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm($event)">
+    <div class="section-container">
+      <div nz-row [nzGutter]="36">
+        <div nz-col [nzSpan]="24" class="section-title">
+          <h3>Basic Information</h3>
+        </div>
+      </div>
+      <div nz-row>
+        <div nz-col [nzSpan]="24" class="avatar-upload">
+          
+          <nz-avatar [nzSize]="64" nzIcon="user"
+            [nzSrc]="profilePic"></nz-avatar>
+          <div>
+            <h4>Change Avatar</h4>
+            <div>
+              Recommended Dimensions:<br />
+              120x120 Max file size: 5MB
+            </div>
+          </div>
+          <nz-upload [nzRemove]="removeProfile" [nzLimit]="2" [nzSize]="200"  [nzDisabled]="fileList.length > 0" 
+            [nzFileType]="'image/png,image/jpeg,image/gif,image/bmp'" [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload">
+            <button type="button" (click)="uploadProfile()" nz-button nzType="primary">
+              <span nz-icon nzType="upload"></span>
+              Upload
+            </button>
+          </nz-upload>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="36">
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="fullName" class="label-style" [nzSpan]="24">Full Name
+            </nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="fullName" id="fullName" nzSize="large"
+                placeholder="Input your full name" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="fullNamekh" class="label-style" [nzSpan]="24">Full Name In Khmer
+            </nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="fullNamekh" id="fullNamekh" nzSize="large"
+                placeholder="Input your full name in khmer" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+     
+
+      <div nz-row [nzGutter]="36">
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="phoneNumber" class="label-style" [nzSpan]="24">Phone Number
+            </nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="phoneNumber" id="firstName" nzSize="large"
+                placeholder="Input your phone number" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="email" class="label-style" [nzSpan]="24">Date Of Birth
+            </nz-form-label>
+            <nz-form-control>
+              <nz-date-picker formControlName="dateOfBirth" class="date-picker" nzSize="large"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="email" class="label-style" [nzSpan]="24">Gender
+            </nz-form-label>
+            <nz-form-control>
+              <nz-select nzSize="large" id="gender" formControlName="gender" nzPlaceHolder="Input your gender">
+                <nz-option nzValue="male" nzLabel="Male"></nz-option>
+                <nz-option nzValue="female" nzLabel="Female"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="36">
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="placeOfBirth" class="label-style" [nzSpan]="24">Place Of Birth
+            </nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="placeOfBirth" id="placeOfBirte" nzSize="large"
+                placeholder="Input your place of birth" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="email" class="label-style" [nzSpan]="24">Telegram Username
+            </nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="telegramUsername" id="telegramUsernam" nzSize="large"
+                placeholder="Input your Telegram Username" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="address" class="label-style" [nzSpan]="24">Address
+            </nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="address" id="address" nzSize="large" placeholder="Input your address" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-container">
+      <div nz-row [nzGutter]="36">
+        <div nz-col [nzSpan]="24" class="section-title">
+          <h3>Email & Password</h3>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="email" class="label-style" [nzSpan]="24">Email
+            </nz-form-label>
+            <nz-form-control nzHasFeedback>
+              <nz-input-group nzPrefixIcon="user" nzSize="large" k>
+                <input nz-input formControlName="email" id="email" nzSize="large" placeholder="Input your email" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="email" class="label-style" [nzSpan]="24">Password
+            </nz-form-label>
+
+            <nz-form-control>
+              <nz-input-group nzPrefixIcon="lock" nzSize="large">
+                <input nz-input formControlName="password" id="password" nzSize="large"
+                  placeholder="Input your password" nzHasFeedback nzPrefixIcon="lock" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="role" class="label-style" [nzSpan]="24">Role
+            </nz-form-label>
+
+            <nz-form-control>
+              <!-- <nz-input-group nzPrefixIcon="lock" nzSize="large"> -->
+                <nz-form-control>
+                  <nz-select nzSize="large" id="role" formControlName="role" nzPlaceHolder="Select roles">
+                    <nz-option nzValue="ADMIN" nzLabel="Admin"></nz-option>
+                    <nz-option nzValue="USER" nzLabel="User"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              <!-- </nz-input-group> -->
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="class" class="label-style" [nzSpan]="24">Classroom
+            </nz-form-label>
+
+            <nz-form-control>
+              <!-- <nz-input-group nzPrefixIcon="lock" nzSize="large"> -->
+                <nz-form-control>
+                  <nz-select nzSize="large" id="class" formControlName="class" nzPlaceHolder="Select Classroom">
+                    <nz-option nzValue="{{data.id}}" nzLabel="{{data.name}}" *ngFor="let data of classData"></nz-option>
+                  
+                  </nz-select>
+                </nz-form-control>
+              <!-- </nz-input-group> -->
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="24">
+          <nz-form-item>
+            <nz-form-control class="register-area">
+              <button nz-button nzType="primary" nzSize="large" class="submit-button" (click)="submitForm($event)"
+                [nzLoading]="isUploading" [disabled]="!validateForm.valid">
+                {{ isUploading ? "Uploading" : "Start Upload" }}
+              </button>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

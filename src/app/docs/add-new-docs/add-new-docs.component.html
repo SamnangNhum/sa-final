@@ -1,0 +1,209 @@
+<div id="add-docs">
+  <h1>Upload Documents</h1>
+
+  <div nz-row [nzGutter]="48">
+    <div class="docs-form" nz-col nzXXl="24">
+      <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm($event)">
+        <div nz-row [nzGutter]="36">
+          <div nz-col [nzXXl]="24" [nzSm]="24">
+            <nz-form-item>
+              <nz-form-label
+                nzSpan="24"
+                nzRequired
+                nzFor="email"
+                style="text-align: left"
+                >Document Name
+              </nz-form-label>
+              <nz-form-control>
+                <input
+                  nz-input
+                  formControlName="docName"
+                  id="email"
+                  nzSize="large"
+                  placeholder="Input document name..."
+                />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzXXl]="12" [nzSm]="24">
+            <nz-form-item>
+              <nz-form-label
+                [nzSpan]="24"
+                nzRequired
+                nzFor="email"
+                style="text-align: left"
+                >Reference Number
+              </nz-form-label>
+              <nz-form-control [nzSpan]="24">
+                <input
+                  nz-input
+                  formControlName="docRef"
+                  id="email"
+                  nzSize="large"
+                  placeholder="Reference Number"
+                />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzXXl]="12" [nzSm]="24">
+            <nz-form-item>
+              <nz-form-label
+                nzRequired
+                nzFor="email"
+                class="label-style"
+                [nzSpan]="24"
+                >Document Date
+              </nz-form-label>
+              <nz-form-control>
+                <nz-date-picker
+                  formControlName="docDate"
+                  class="date-picker"
+                  nzSize="large"
+                ></nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+        <div nz-row [nzGutter]="36">
+          <div nz-col [nzXXl]="12" [nzSm]="24">
+            <nz-form-item>
+              <nz-form-label
+                nzSpan="24"
+                nzRequired
+                nzFor="email"
+                style="text-align: left"
+                >Document Type
+              </nz-form-label>
+              <nz-form-control nzSpan="24">
+                <nz-select
+                  nzShowSearch
+                  nzSize="large"
+                  id="docType"
+                  formControlName="docType"
+                  nzPlaceHolder="Select document type"
+                >
+                  <nz-option
+                    nzValue="{{ docType.id }}"
+                    nzLabel="{{ docType.name }}"
+                    *ngFor="let docType of docType"
+                  ></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzXXl]="12" [nzSm]="24">
+            <nz-form-item>
+              <nz-form-label
+                nzSpan="24"
+                nzRequired
+                nzFor="email"
+                style="text-align: left"
+                >Document Category</nz-form-label
+              >
+              <nz-form-control>
+                <nz-select
+                  nzShowSearch
+                  nzSize="large"
+                  id="docCategory"
+                  formControlName="docCategory"
+                  nzPlaceHolder="Select document category"
+                  onkeyup='inputCategoryValue($event.target.value)'
+                >
+                  <div *ngIf="!noData">
+                    <nz-option
+                      nzValue="{{ docCategory.id }}"
+                      nzLabel="{{ docCategory.name }}"
+                      *ngFor="let docCategory of docCategory"
+                    ></nz-option>
+                  </div>
+
+                 
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzXXl]="12" [nzSm]="24">
+            <nz-form-item>
+              <nz-form-label
+                nzSpan="24"
+                nzRequired
+                nzFor="email"
+                style="text-align: left"
+                >Document Source</nz-form-label
+              >
+              <nz-form-control>
+                <nz-select
+                  nzShowSearch
+                  nzSize="large"
+                  id="docSource"
+                  formControlName="docSource"
+                  nzPlaceHolder="Select document Source"
+                >
+                  <nz-option
+                    nzValue="{{ docSource.id }}"
+                    nzLabel="{{ docSource.name }}"
+                    *ngFor="let docSource of docSource"
+                  ></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+        <nz-form-item>
+          <nz-form-label
+            nzSpan="24"
+            nzRequired
+            nzFor="email"
+            style="text-align: left"
+            >Document File</nz-form-label
+          >
+          <div nz-col [nzXXl]="24" [nzSm]="24" class="upload-box">
+            <nz-upload
+              nzType="drag"
+              [nzMultiple]="true"
+              nzListType="text"
+              [nzBeforeUpload]="beforeUpload"
+              [(nzFileList)]="fileList"
+              [nzAccept]="[
+                '.jpg',
+                '.jpeg',
+                '.docx',
+                '.png',
+                '.pdf',
+                '.xslx',
+                '.doc',
+                '.ppt',
+                '.pptx',
+                '.xls',
+                '.xlsx'
+              ]"
+            >
+              <p class="ant-upload-drag-icon">
+                <span nz-icon nzType="inbox"></span>
+              </p>
+              <p class="ant-upload-text">
+                Click or drag file to this area to upload
+              </p>
+            </nz-upload>
+          </div>
+        </nz-form-item>
+        <nz-form-item class="register-area">
+          <nz-form-control>
+            <button
+              nz-button
+              nzType="primary"
+              nzSize="large"
+              [nzLoading]="uploading"
+              (click)="submitForm($event)"
+              [disabled]="!this.validateForm.valid"
+            >
+              {{ uploading ? "Uploading" : "Start Upload" }}
+            </button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+  </div>
+</div>

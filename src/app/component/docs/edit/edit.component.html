@@ -1,0 +1,132 @@
+<nz-spin [nzSpinning]="modalLoading">
+  <div id="add-docs">
+    <h1>Update Documents</h1>
+
+    <div nz-row [nzGutter]="48">
+      <div class="docs-form" nz-col nzXXl="24">
+        <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm($event)">
+          <div nz-row [nzGutter]="36">
+            <div nz-col [nzXXl]="24" [nzSm]="24">
+              <nz-form-item>
+                <nz-form-label nzSpan="24" nzRequired nzFor="email" style="text-align: left">Document Name
+                </nz-form-label>
+                <nz-form-control>
+                  <input nz-input formControlName="docName" id="email" nzSize="large"
+                    placeholder="Input document name..." />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzXXl]="12" [nzSm]="24">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzRequired nzFor="email" style="text-align: left">Reference Number
+                </nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                  <input nz-input formControlName="docRef" id="email" nzSize="large" placeholder="Reference Number" />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzXXl]="12" [nzSm]="24">
+              <nz-form-item>
+                <nz-form-label nzRequired nzFor="email" class="label-style" [nzSpan]="24">Document Date
+                </nz-form-label>
+                <nz-form-control>
+                  <nz-date-picker formControlName="docDate" class="date-picker" nzSize="large"></nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+
+          <div nz-row [nzGutter]="36">
+            <div nz-col [nzXXl]="12" [nzSm]="24">
+              <nz-form-item>
+                <nz-form-label nzSpan="24" nzRequired nzFor="email" style="text-align: left">Document Type
+                </nz-form-label>
+                <nz-form-control nzSpan="24">
+                  <nz-select [nzShowArrow]="true" nzShowSearch nzSize="large" id="docType" formControlName="docType"
+                    nzPlaceHolder="Select document type">
+                    <nz-option nzValue="{{data.id}}" nzLabel="{{data.name}}" *ngFor="let data of docType"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzXXl]="12" [nzSm]="24">
+              <nz-form-item>
+                <nz-form-label nzSpan="24" nzRequired nzFor="email" style="text-align: left">Document
+                  Category</nz-form-label>
+                <nz-form-control>
+                  <nz-select nzShowSearch nzSize="large" id="docCategory" formControlName="docCategory"
+                    nzPlaceHolder="Select document category">
+                    <nz-option nzValue="{{data.id}}" nzLabel="{{data.name}}"
+                      *ngFor="let data of docCategory"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzXXl]="12" [nzSm]="24">
+              <nz-form-item>
+                <nz-form-label nzSpan="24" nzRequired nzFor="email" style="text-align: left">Document
+                  Source</nz-form-label>
+                <nz-form-control>
+                  <nz-select nzShowSearch nzSize="large" id="docSource" formControlName="docSource"
+                    nzPlaceHolder="Select document Source">
+                    <nz-option nzValue="{{data.id}}" nzLabel="{{data.name}}" *ngFor="let data of docSource"></nz-option>
+
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+
+          <nz-form-item>
+            <nz-form-label nzSpan="24" nzRequired nzFor="email" style="text-align: left">Document File</nz-form-label>
+
+
+            <div class="docFile" *ngFor="let fileList of fileList">
+              <span nz-icon nzType="file-image" nzTheme="outline" style="font-size:64px;"></span>
+              <div>{{fileList.original_name}}</div>
+              <div>
+                <span *ngIf="fileList.canView" nz-icon nzType="eye" nzTheme="outline" style="margin-right:10px"
+                  (click)="showImage(fileList['id'])"></span>
+                <span nz-icon nzType="download" nzTheme="outline" (click)="downloadFile(fileList['id'])"></span>
+              </div>
+              <span nz-icon nzType="close" nzTheme="outline" class="cancel-icon" *ngIf="!isView"
+                (click)="deleteDoc(fileList['id'])"></span>
+            </div>
+
+            <div nz-col [nzXXl]="24" [nzSm]="24" class="upload-box" *ngIf="!isView">
+              <nz-upload nzType="drag" [nzMultiple]="true" nzListType="text" [nzBeforeUpload]="beforeUpload"
+                [(nzFileList)]="uploadfileList" [nzAccept]="['.jpg', '.jpeg', '.docx', '.png', '.pdf' , '.xslx' , '.doc' , '.ppt' , '.pptx', '.xls' , '.xlsx' ]">
+                <p class="ant-upload-drag-icon">
+                  <span nz-icon nzType="inbox"></span>
+                </p>
+                <p class="ant-upload-text">
+                  Click or drag file to this area to upload
+                </p>
+              </nz-upload>
+            </div>
+          </nz-form-item>
+
+
+          <nz-form-item class="register-area" *ngIf="!isView">
+            <nz-form-control>
+              <button nz-button nzType="primary" nzSize="large" [nzLoading]="uploading" (click)="submitForm($event)">
+                {{ uploading ? "Uploading" : "Start Upload" }}
+              </button>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()" nzWidth="600px" [nzOkText]="null"
+    [nzCancelText]="null" class="file-modal">
+    <ng-container *nzModalContent>
+      <img [src]="filePreview" width="100%" *ngIf="isImage">
+      <pdf-viewer [src]="filePreview" [render-text]="true" [original-size]="false" style="width:100%; height: 70vh"
+        *ngIf="!isImage"></pdf-viewer>
+    </ng-container>
+  </nz-modal>
+
+</nz-spin>

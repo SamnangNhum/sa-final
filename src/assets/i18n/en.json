@@ -1,0 +1,42 @@
+{
+    "driver" : {
+        "title" : "Driver",
+        "add" : "Add New",
+        "list" : "Driver List",
+        "driverTable" : {
+            "id" : "#",
+            "name" : "Name",
+            "email" : "Email",
+            "address" : "Address",
+            "action" : "Action",
+            "edit":"Edit",
+            "delete": "Delete",
+            "inputName": "Input driver name"
+        },
+        "driverTS":{
+            "deleteMessage" : "Do you want to delete this item?",
+            "ok": "OK",
+            "cancel" : "Cancel",
+            "action" : "Action in progress...",
+            "success" : "Delete successfully"
+        } 
+    },
+    "addDriver" : {
+        "addNewDriver" : "Add New Driver",
+        "name": "Full Name",
+        "address": "Address",
+        "phoneNumber" : "Phone Number",
+        "note" : "Notes",
+        "additionalNote" : "Additional notes",
+        "confirm":"Submit"
+    },
+    "sale" : {
+        "dlsale" : "Download Sales"
+    },
+    "dash" : {
+        "profit" : "Profit",
+        "expense" : "Expense",
+        "delivery": "Delivery" ,
+        "newCus" : "New Customers"
+    }
+}

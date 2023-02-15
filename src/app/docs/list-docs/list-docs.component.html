@@ -1,0 +1,88 @@
+<div nz-row nzWidth="100%">
+  <div nz-col class="docs">
+    <div class="docs-operation">
+      <nz-space [nzSize]="16" style="margin-bottom: 10px;">
+      </nz-space>
+      <nz-space>
+        <nz-input-group nzSearch>
+          <input type="text" nz-input placeholder="Search Document" [(ngModel)]="inputValue" class="search-box"
+            (input)="onInput($event)" />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <i nz-icon nzType="search"></i>
+        </ng-template>
+      </nz-space>
+    </div>
+    <nz-table #fixedTable [nzFrontPagination]="false" [nzData]="dataSet" class="driver-table" [nzLoading]="isLoading"
+      [nzScroll]="{ x: '768px' }">
+      <thead>
+        <tr>
+          <th translate nzWidth="10%">Ref</th>
+          <th translate nzWidth="20%" nzLeft>Name</th>
+          <th translate nzWidth="10%">Category</th>
+          <th translate nzWidth="10%">Type</th>
+          <th translate nzWidth="10%">Source</th>
+          <th translate nzWidth="10%">Aurthor</th>
+          <th translate nzWidth="20%">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let data of fixedTable.data; let i = index">
+          <tr *ngIf="data.is_approved === this.isApproved" >
+            <td>{{ data.ref_number }}</td>
+            <td nzLeft>{{ data.title }}</td>
+            <td>{{ data.document_category.name }}</td>
+            <td>{{ data.document_type.name }}</td>
+            <td>{{ data.source.name }}</td>
+            <td>{{ data.user.email }}</td>
+            <td>
+              <nz-space [nzSize]="10" *ngIf="data.is_approved === 2">
+                <button *nzSpaceItem nz-button nzType="primary" innerHTML="Edit" (click)="showModal(data.id)"
+                  [disabled]="data.access">
+                  Edit
+                </button>
+                <button *nzSpaceItem nz-button innerHTML="Delete" (click)="deleteUser(data.id)"
+                  [disabled]="data.access">
+                  Delete
+                </button>
+                <button *nzSpaceItem nz-button innerHTML="Delete" (click)="viewDocs(data.id)" [disabled]="data.access">
+                  View
+                </button>
+              </nz-space>
+              <nz-space [nzSize]="10" *ngIf="data.is_approved === 1">
+                <button *nzSpaceItem nz-button nzType="primary" innerHTML="Edit" (click)="acceptedDocs(data.id)">
+                
+                  Accepted
+                </button>
+               
+               
+              </nz-space>
+            </td>
+          </tr>
+        </ng-container>
+        </tbody>
+    </nz-table>
+    <nz-pagination (nzPageIndexChange)="pageIndexChange($event)" [nzPageIndex]="1"
+      [nzTotal]="totalDocs"></nz-pagination>
+  </div>
+</div>
+
+<!-- Dropdown item -->
+<nz-dropdown-menu #sort="nzDropdownMenu">
+  <ul nz-menu>
+    <li nz-menu-item>By Name [a-z]</li>
+    <li nz-menu-item>By Age</li>
+  </ul>
+</nz-dropdown-menu>
+<nz-dropdown-menu #filter="nzDropdownMenu">
+  <ul nz-menu>
+    <li nz-menu-item>By Status</li>
+  </ul>
+</nz-dropdown-menu>
+
+<nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()" nzWidth="968px" [nzOkText]="null"
+  [nzCancelText]="null" class="file-modal">
+  <ng-container *nzModalContent>
+    <app-edit [dataShare]="dataSharing" [isView]="isView"></app-edit>
+  </ng-container>
+</nz-modal>

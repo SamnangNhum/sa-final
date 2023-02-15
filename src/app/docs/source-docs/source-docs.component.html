@@ -1,0 +1,178 @@
+<div class="table-container">
+  <h1>Upload Document Source</h1>
+  <div nz-row class="table-operation" [nzGutter]="48">
+    <div class="docs-form" nz-col nzXXl="24" nzSm="24">
+      <form
+        nz-form
+        [formGroup]="validateForm"
+        (ngSubmit)="submitForm($event)"
+        id="docs-category"
+      >
+        <nz-form-item>
+          <nz-form-label
+            [nzSpan]="24"
+            nzRequired
+            nzFor="email"
+            style="text-align: left"
+            >Document Source Name
+          </nz-form-label>
+          <nz-form-control [nzSpan]="24">
+            <input
+              nz-input
+              formControlName="docCat"
+              id="docs-cat"
+              nzSize="large"
+              placeholder="Type Name"
+            />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item class="register-area">
+          <nz-form-control>
+            <button
+              nz-button
+              nzType="primary"
+              nzSize="large"
+              [nzLoading]="isLoading"
+              (click)="submitForm($event)"
+              [disabled]="!validateForm.valid"
+            >
+              {{ isLoading ? "Uploading" : "Start Upload" }}
+            </button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+    <div class="docs-form" nz-col nzXXl="24" nzSm="24">
+      <div nz-row nzWidth="100%">
+        <div nz-col class="office-table">
+          <div class="table-operation">
+            <nz-space [nzSize]="16">
+              <button *nzSpaceItem nz-button nzType="default">Sort</button>
+              <button
+                *nzSpaceItem
+                nz-button
+                [nzType]=" 'primary'"
+              >
+            
+              </button>
+            </nz-space>
+            <nz-space>
+              <nz-input-group nzSearch>
+                <input
+                  type="text"
+                  nz-input
+                  placeholder="Input Docs"
+     
+                  (input)="onInput($event)"
+                  class="search-box"
+                />
+              </nz-input-group>
+              <ng-template #suffixIconSearch>
+                <i nz-icon nzType="search"></i>
+              </ng-template>
+            </nz-space>
+          </div>
+          <nz-table #basicTable  [nzData]="dataSet" [nzLoading]="isLoading" class="driver-table">
+            <thead>
+              <tr>
+                <!-- <th *ngIf="enableCheckBox">
+                  <label
+                    nz-checkbox
+                    [(ngModel)]="allChecked"
+                  ></label>
+                </th> -->
+                <th translate nzWidth="50%">Name</th>
+                <th translate nzWidth="30%">Create At</th>
+           
+                <th translate nzWidth="20%">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of basicTable.data; let i = index">
+                <!-- <td *ngIf="enableCheckBox">
+                  <label
+                    nz-checkbox
+                    [(ngModel)]="data.checked"
+               
+                  ></label>
+                </td> -->
+                <td>
+                  {{data.name}}
+                </td>
+                <td>
+                  {{data.createdAt | date }}
+                </td>
+               
+                <td>
+                  <nz-space [nzSize]="10">
+                    <button
+                      *nzSpaceItem
+                      nz-button
+                      nzType="primary"
+                      (click)="showModal(data.id)"
+                      innerHTML="Edit"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      *nzSpaceItem
+                      nz-button 
+                      (click)="handleDelete(data.id)"
+                      innerHTML="Delete"
+                    >
+                      Delete
+                    </button>
+                  </nz-space>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+      </div>
+      
+      <!-- Dropdown item -->
+      <nz-dropdown-menu #sort="nzDropdownMenu">
+        <ul nz-menu>
+          <li nz-menu-item>By Name [a-z]</li>
+          <li nz-menu-item>By Age</li>
+        </ul>
+      </nz-dropdown-menu>
+      <nz-dropdown-menu #filter="nzDropdownMenu">
+        <!-- <ul nz-menu *ngFor="let data of dataSet">
+          <li nz-menu-item>{{ data.role }}</li>
+        </ul> -->
+      </nz-dropdown-menu>
+      
+  </div>
+</div>
+
+<nz-modal [(nzVisible)]="isVisible" nzOkText="Okay" nzCancelText="Delete" nzTitle="Update Category" (nzOnCancel)="handleCancel()" (nzOnOk)="submitUpdate($event)">
+  <ng-container *nzModalContent>
+    <form
+        nz-form
+        [formGroup]="validateFieldEdit"
+        (ngSubmit)="submitUpdate($event)"
+        id="docs-category"
+      >
+    <nz-form-item>
+      <nz-form-label
+        [nzSpan]="24"
+        nzRequired
+        nzFor="email"
+        style="text-align: left"
+        >Document Category Name
+      </nz-form-label>
+      <nz-form-control [nzSpan]="24">
+        <input
+          nz-input
+          formControlName="docCat"
+          id="docs-cat"
+          nzSize="large"
+          placeholder="Category Name"
+        />
+      </nz-form-control>
+    </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

@@ -1,0 +1,98 @@
+<nz-layout nzHeight="100%" style="position: relative; width: 100%" >
+  <nz-sider
+  nzBreakpoint="lg" 
+    nzCollapsible
+    [(nzCollapsed)]="isCollapsed"
+    [nzTrigger]="null"
+    class="sider"
+    nzWidth="250px"
+    nzHeight="100%"
+    *ngIf="this.router.url != '/login' && this.router.url != '/not-found'"
+  >
+    <h1 style="font-size:28px;padding: 20px; text-align: Center ; color:#fff">
+      {{ isCollapsed ? "S" : "SETEC" }}
+    </h1>
+    <nz-affix>
+      <ul nz-menu nzTheme="dark" nzMode="inline" class="nav-container">
+     
+
+        <li
+          nz-submenu
+          nzTitle="Document"
+          nzIcon="file"
+          class="nav"
+          [(nzOpen)]="openMap['sub1']"
+          (nzOpenChange)="openHandler('sub1')"
+        >
+          <ul>
+            <li nz-menu-item nzSelected translate routerLink="/docs/addNew">
+              Add New
+            </li>
+            <li nz-menu-item [routerLink]="['/docs/list' , 2]"  translate>
+              All Documents
+            </li>
+            <li nz-menu-item routerLink="/docs/category-docs" translate>
+              Document Category
+            </li>
+            <li nz-menu-item routerLink="/docs/type-docs" translate>
+              Document Type
+            </li>
+            <li nz-menu-item routerLink="/docs/source-docs" translate>
+              Document Source
+            </li>
+          </ul>
+        </li>
+    
+        <li nz-menu-item class="nav" routerLink="/classroom" *ngIf="(isAdmin | async)">
+          <i nz-icon nzType="solution" class="nav"></i>
+          <span>Classroom</span>
+        </li>
+      
+      <li
+      nz-submenu
+      nzTitle="User"
+      nzIcon="user"
+      class="nav"
+      [(nzOpen)]="openMap['sub2']"
+      (nzOpenChange)="openHandler('sub2')"
+      *ngIf="(isAdmin | async)"
+    >
+      <ul>
+        <li nz-menu-item routerLink="/users/addNew">Add New</li>
+        <li nz-menu-item routerLink="/users/list">List Users</li>
+      </ul>
+    </li>
+      </ul>
+    </nz-affix>
+  </nz-sider>
+
+  <nz-layout>
+    <nz-header
+      class="header"
+      *ngIf="this.router.url != '/login' && this.router.url != '/not-found'"
+    >
+      <div nz-row class="header-row">
+        <div nz-col [nzSpan]="12">
+          <div nz-row nzAlign="middle">
+            <div nz-col [nzSpan]="4">
+              <i
+                class="trigger"
+                nz-icon
+                [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+                (click)="isCollapsed = !isCollapsed"
+              ></i>
+            </div>
+            <div nz-col [nzSpan]="12" class="header-right"></div>
+          </div>
+        </div>
+        <div nz-col [nzSpan]="12" class="header-right">
+          <app-right></app-right>
+        </div>
+      </div>
+    </nz-header>
+
+    <nz-content [class]="this.router.url != '/login' ? 'body' : 'no-body'">
+      <router-outlet></router-outlet>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

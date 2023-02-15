@@ -1,0 +1,43 @@
+{
+    "driver" : {
+        "title" : "អ្នកបើកបរ",
+        "add" : "បន្ថែម​ថ្មី",
+        "list" : "បញ្ជីអ្នកបើកបរ",
+        "driverTable" : {
+            "id" : "#",
+            "name" : "ឈ្មោះ",
+            "email" : "អ៊ីមែល",
+            "address" : "អាស័យដ្ឋាន",
+            "action" : "សកម្មភាព",
+            "edit":"កែសម្រួល",
+            "delete": "លុប",
+            "inputName": "បញ្ចូលឈ្មោះអ្នកបើកបរ"
+        } ,
+        "driverTS":{
+            "deleteMessage" : "តើអ្នកចង់លុបជួរនេះទេ?",
+            "ok": "យល់ព្រម",
+            "cancel" : "បោះបង់",
+            "action" : "សកម្មភាពកំពុងដំណើរការ...",
+            "success" : "លុបដោយជោគជ័យ"
+        }
+    },
+    "addDriver":{
+        "addNewDriver" : "បន្ថែមអ្នកបើកបរថ្មី",
+        "name": "ឈ្មោះ​ពេញ",
+        "address": "អាស័យដ្ឋាន",
+        "phoneNumber" : "លេខទូរស័ព្ទ",
+        "note" : "ចំណាំ",
+        "additionalNote" : "កំណត់ចំណាំបន្ថែម",
+        "confirm":"យល់ព្រម"
+    },
+    "sale" : {
+        "dlsale" : "ការទាញយកការលក់"
+    },
+    "dash" : {
+        "profit" : "Profit",
+        "expense" : "Expense",
+        "delivery": "Today Delivery" ,
+        "newCus" : "New Customers"
+    }
+    
+}

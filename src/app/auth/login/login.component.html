@@ -1,0 +1,60 @@
+<div nz-row class="login">
+  <div nz-col nzSpan="24" class="login-container">
+    <div class="login-card">
+      <form
+        nz-form
+        class="login-form"
+        [formGroup]="validateForm"
+        (ngSubmit)="submitForm($event)"
+      >
+        <div class="login-title-container">
+          <h1 class="login-title">SETEC</h1>
+          <h1 class="login-title">LOGIN</h1>
+        </div>
+
+        <nz-form-item>
+          <nz-form-control [nzErrorTip]="validateUsername" nzHasFeedback>
+            <nz-input-group nzPrefixIcon="user" nzSize="large">
+              <input
+                type="text"
+                nz-input
+                nzSize="large"
+                formControlName="userName"
+                placeholder="Username"
+           
+              />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control [nzErrorTip]="validatePassword" nzHasFeedback>
+            <nz-input-group nzPrefixIcon="lock" nzSize="large">
+              <input
+                type="password"
+                nzSize="large"
+                nz-input
+                formControlName="password"
+                placeholder="Password"
+                [nzBorderless]="false"
+              
+              />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <button
+          nz-button
+          class="login-form-button"
+          [nzType]="'primary'"
+          (click)="submitForm($event)"
+          type="submit"
+          [disabled]="validateForm.invalid"
+          nzSize="large"
+          [nzLoading]="isLoading"
+        >
+          Log in
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

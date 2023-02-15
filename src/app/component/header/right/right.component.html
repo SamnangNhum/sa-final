@@ -1,0 +1,99 @@
+<div class="header-right">
+  <nz-avatar
+    nzIcon="user"
+    nz-dropdown
+    [nzDropdownMenu]="accountMenu"
+    nzTrigger="click"
+    class="trigger-icon"
+  >
+  </nz-avatar>
+
+  <!-- Dropdown Menu Notificaiton -->
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <div class="header">
+      <i nz-icon nzType="bell" nzTheme="outline"></i>
+      <span>Notifications</span>
+    </div>
+
+    <div nz-menu nz-menu-item *ngFor="let notiData of notiList">
+      <div class="noti-item">
+        <div>
+          <i
+            nz-icon
+            nzType="bell"
+            nzTheme="outline"
+            nzSize="large"
+            class="icon-style"
+          ></i>
+        </div>
+        <div style="font-size: 14px">
+          {{ notiData.name }}<br />
+          <span style="font-size: 12px; color: #b8b8b8">8min ago</span>
+        </div>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+</div>
+
+<!-- Dropdown Menu Profile -->
+
+<nz-dropdown-menu #accountMenu="nzDropdownMenu">
+  <div class="header">
+    <nz-avatar nzIcon="user" nzSize="large"></nz-avatar>
+    <div>
+      <div>Notifications</div>
+      <div>User</div>
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <div class="profile-item">
+        <div nz-menu nz-menu-item (click)="showEditProfile()">
+          <span
+            nz-icon
+            nzType="user"
+            nzTheme="outline"
+            style="padding-right: 10px"
+          ></span>
+          Edit Profile
+
+          <span
+            nz-icon
+            nzType="right"
+            nzTheme="outline"
+            style="padding-left: 10px; font-size: 12px; color: #b8b8b8"
+          ></span>
+        </div>
+        <div nz-menu nz-menu-item (click)="logout()">
+          <span
+            nz-icon
+            nzType="unlock"
+            nzTheme="outline"
+            style="padding-right: 10px"
+          ></span>
+          Logout
+
+          <span
+            nz-icon
+            nzType="right"
+            nzTheme="outline"
+            style="padding-left: 10px; font-size: 12px; color: #b8b8b8"
+          ></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+<nz-modal
+  [(nzVisible)]="isVisible"
+  (nzOnCancel)="handleCancel()"
+  nzWidth="968px"
+  [nzOkText]="null"
+  [nzCancelText]="null"
+>
+  <ng-container *nzModalContent>
+    <edit-profile></edit-profile>
+  </ng-container>
+</nz-modal>
