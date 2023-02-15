@@ -101,25 +101,26 @@ export class ProfileComponent implements OnInit, OnChanges {
         this.message.error('Failed to update Profile');
         return;
       }
+      try {
+        const formData: any = new FormData();
+        await formData.append(
+          'file',
+          this.fileList[0],
+          this.fileList[0].filename
+        );
+        await formData.append('student_id', this.users.student.id);
+        await lastValueFrom(this.http.post('/profile', formData));
+      } catch (err) {
+        console.log(err);
+        this.isUploading = false;
+  
+        return;
+      }
     }
 
-    try {
-      const formData: any = new FormData();
-      await formData.append(
-        'file',
-        this.fileList[0],
-        this.fileList[0].filename
-      );
-      await formData.append('student_id', this.users.student.id);
-      await lastValueFrom(this.http.post('/profile', formData));
-    } catch (err) {
-      console.log(err);
-      this.isUploading = false;
-
-      return;
-    }
+  
     this.getCurrentUser();
-    this.isUploading = true;
+
 
     this.message.success('Successfully update');
     this.isUploading = false;
