@@ -5,7 +5,6 @@ import { catchError, Observable, of } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-
 export class DocsService {
   searchDocs(value: string): Observable<any> {
     return this.http.get(`/document/search?=${value}`).pipe(
@@ -15,8 +14,6 @@ export class DocsService {
       })
     );
   }
-
-
 
   filterByCategory(value: string): Observable<any> {
     return this.http.get(`/document/document-category?query=${value}`).pipe(
@@ -49,7 +46,7 @@ export class DocsService {
     });
   }
 
-  downloadDoc(id:string){
+  downloadDoc(id: string) {
     this.getAttachMent(id).subscribe((response) => {
       const contentDisposition = response.headers.get('Content-Disposition');
       let fileName = '';
@@ -112,7 +109,6 @@ export class DocsService {
     );
   }
 
- 
   // List
   getAllDocs(): Observable<any> {
     return this.http.get('/document?take=0&skip=0').pipe(

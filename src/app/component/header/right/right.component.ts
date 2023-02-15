@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { catchError, of } from 'rxjs';
 import { AuthService } from 'src/app/services/auth-service.service';
 
 @Component({
@@ -8,6 +9,7 @@ import { AuthService } from 'src/app/services/auth-service.service';
 })
 export class RightComponent implements OnInit {
   isVisible: boolean = false;
+  users: any = [];
   showEditProfile(){
     this.isVisible = true;
   }
@@ -35,6 +37,13 @@ export class RightComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.authService.getCurrentUser(localStorage.getItem('user_id') as string).pipe(catchError((err)=>{
+      return of()
+    })).subscribe((user)=>{
+ 
+      this.users = user;
+      console.log(this.users)
+    })
   }
 
 }

@@ -34,8 +34,10 @@ export class AppComponent implements OnInit {
     this.router = router;
     router.events.subscribe(async () => {
       const response = await lastValueFrom(this.authService.getUserId());
+      console.log(response);
       if (response.role === 'USER') {
         this.isAdmin = of(false);
+ 
         return;
       }
       this.isAdmin = of(true);

@@ -25,10 +25,12 @@ export class ListUsersComponent implements OnInit {
   isLoading: boolean = false;
   totalUser: number = 0;
   isVisible: boolean = false;
-  isView: boolean = false;
-  showModal(): void {
+  editUser: boolean = false;
+  userId:string = '';
+  showModal(id:string): void {
     this.isVisible = true;
-    this.isView = false;
+    this.editUser= true;
+    this.userId = id
   }
   handleCancel(): void {
     this.isVisible = false;
@@ -51,26 +53,7 @@ export class ListUsersComponent implements OnInit {
   }
   // Fire Select Button To display check box
 
-  pageIndexChange(index: any): void {
-    console.log(index);
-    this.isLoading = true;
-    this.pageIndex = (index as string) + '0';
-    let skipNumber = index - 1 + '0';
-
-    this.http
-      .get(`/user?take=${this.pageIndex}&skip=${skipNumber}`)
-      .pipe(
-        catchError((err) => {
-          console.log(err);
-          return of(err);
-        })
-      )
-      .subscribe((data) => {
-        console.log(data);
-        this.dataSet = [...data];
-        this.isLoading = false;
-      });
-  }
+ 
 
   deleteMessage: string = 'Are you sure you want to delete this user?';
   okBtn: string = 'Ok';
@@ -110,20 +93,7 @@ export class ListUsersComponent implements OnInit {
     });
   }
 
-  editUser(id: string) {
-    try {
-      this.http
-        .patch('/student/' + id, { sex: 'Female' })
-        .pipe(
-          catchError((err) => {
-            return of(err);
-          })
-        )
-        .subscribe((data) => {
-          console.log(data);
-        });
-    } catch (err) {}
-  }
+
   constructor(
     private http: HttpClient,
     private message: NzMessageService,
@@ -132,10 +102,11 @@ export class ListUsersComponent implements OnInit {
     private classService: ClassService
   ) {}
 
-  async getUserByOffice(): Promise<void> {
+  async getUserByClass(): Promise<void> {
     let currentUser: any = [];
     try {
-      currentUser = await lastValueFrom(this.authService.getCurrentUser());
+  
+      currentUser = await lastValueFrom(this.authService.getCurrentUser(localStorage.getItem('user_id') as string));
     } catch (err) {
       return;
     }
@@ -167,6 +138,6 @@ export class ListUsersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getUserByOffice();
+    this.getUserByClass();
   }
 }

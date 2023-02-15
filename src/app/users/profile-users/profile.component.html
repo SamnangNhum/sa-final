@@ -63,7 +63,7 @@
         </div>
         <div nz-col [nzSpan]="8">
           <nz-form-item>
-            <nz-form-label nzRequired nzFor="email" class="label-style" [nzSpan]="24">Date Of Birth
+            <nz-form-label nzRequired nzFor="dateOfBirth" class="label-style" [nzSpan]="24">Date Of Birth
             </nz-form-label>
             <nz-form-control>
               <nz-date-picker formControlName="dateOfBirth" class="date-picker" nzSize="large"></nz-date-picker>
@@ -72,7 +72,7 @@
         </div>
         <div nz-col [nzSpan]="8">
           <nz-form-item>
-            <nz-form-label nzRequired nzFor="email" class="label-style" [nzSpan]="24">Gender
+            <nz-form-label nzRequired nzFor="gender" class="label-style" [nzSpan]="24">Gender
             </nz-form-label>
             <nz-form-control>
               <nz-select nzSize="large" id="gender" formControlName="gender" nzPlaceHolder="Input your gender">
@@ -96,7 +96,7 @@
         </div>
         <div nz-col [nzSpan]="12">
           <nz-form-item>
-            <nz-form-label nzRequired nzFor="email" class="label-style" [nzSpan]="24">Telegram Username
+            <nz-form-label nzRequired nzFor="telegramUsername" class="label-style" [nzSpan]="24">Telegram Username
             </nz-form-label>
             <nz-form-control>
               <input nz-input formControlName="telegramUsername" id="telegramUsernam" nzSize="large"
@@ -119,22 +119,9 @@
     <div class="section-container">
       <div nz-row [nzGutter]="36">
         <div nz-col [nzSpan]="24" class="section-title">
-          <h3>Email & Password</h3>
+          <h3>Role & Classroom</h3>
         </div>
-        <div nz-col [nzSpan]="12">
-          <nz-form-item>
-            <nz-form-label nzRequired nzFor="email" class="label-style" [nzSpan]="24">Email
-            </nz-form-label>
-            <nz-form-control nzHasFeedback>
-              <nz-input-group nzPrefixIcon="user" nzSize="large" k>
-                <input nz-input formControlName="email" id="email" nzSize="large" placeholder="Input your email" />
-              </nz-input-group>
-            </nz-form-control>
-          </nz-form-item>
-        </div>
-        <div nz-col [nzSpan]="12">
-        
-        </div>
+    
         <div nz-col [nzSpan]="12">
           <nz-form-item>
             <nz-form-label nzRequired nzFor="role" class="label-style" [nzSpan]="24">Role

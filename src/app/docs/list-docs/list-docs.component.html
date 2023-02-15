@@ -22,21 +22,21 @@
           <th translate nzWidth="10%">Category</th>
           <th translate nzWidth="10%">Type</th>
           <th translate nzWidth="10%">Source</th>
-          <th translate nzWidth="10%">Aurthor</th>
+
           <th translate nzWidth="20%">Action</th>
         </tr>
       </thead>
       <tbody>
         <ng-container *ngFor="let data of fixedTable.data; let i = index">
-          <tr *ngIf="data.is_approved === this.isApproved" >
+          <tr  >
             <td>{{ data.ref_number }}</td>
             <td nzLeft>{{ data.title }}</td>
             <td>{{ data.document_category.name }}</td>
             <td>{{ data.document_type.name }}</td>
             <td>{{ data.source.name }}</td>
-            <td>{{ data.user.email }}</td>
+       
             <td>
-              <nz-space [nzSize]="10" *ngIf="data.is_approved === 2">
+              <nz-space [nzSize]="10" >
                 <button *nzSpaceItem nz-button nzType="primary" innerHTML="Edit" (click)="showModal(data.id)"
                   [disabled]="data.access">
                   Edit
@@ -49,14 +49,7 @@
                   View
                 </button>
               </nz-space>
-              <nz-space [nzSize]="10" *ngIf="data.is_approved === 1">
-                <button *nzSpaceItem nz-button nzType="primary" innerHTML="Edit" (click)="acceptedDocs(data.id)">
-                
-                  Accepted
-                </button>
-               
-               
-              </nz-space>
+         
             </td>
           </tr>
         </ng-container>

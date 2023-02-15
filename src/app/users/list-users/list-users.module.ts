@@ -15,7 +15,8 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { EditModule } from 'src/app/component/user/edit/edit.module';
+import { ProfileModule } from '../profile-users/profile.module';
+
 
 
 
@@ -26,7 +27,7 @@ import { EditModule } from 'src/app/component/user/edit/edit.module';
   imports: [
     CommonModule,
     ListUsersRoutingModule,
-    EditModule,
+    ProfileModule,
     NzTableModule,
     NzDividerModule,
     NzSpaceModule,

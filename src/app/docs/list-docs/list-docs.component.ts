@@ -122,9 +122,7 @@ export class ListDocsComponent implements OnInit {
             )
           );
         } catch (err) {}
-        this.docsService.getAllDocs().subscribe((data) => {
-          this.dataSet = data;
-        });
+        this.getAllDocumentByclass()
         const id = this.message.loading(this.actionText, {
           nzDuration: 2500,
         }).messageId;
@@ -163,17 +161,20 @@ export class ListDocsComponent implements OnInit {
   async getAllDocumentByclass() {
     let currentUser: any = [];
     try {
-      currentUser = await lastValueFrom(this.authService.getCurrentUser());
+      currentUser = await lastValueFrom(this.authService.getCurrentUser(localStorage.getItem('user_id') as string));
     } catch (err) {
+      this.isLoading = false;
       return;
     }
+    console.log(currentUser);
     if (currentUser.role === 'ADMIN' || currentUser.role === 'USER') {
       try {
         const response = await lastValueFrom(
-          this.classService.getClassById(currentUser.classr.class_id)
+          this.classService.getClassById(currentUser.student.class.id)
         );
-          console.log(response)
+
         this.dataSet = [...response.document];
+        console.log(response);
         if (currentUser.role === 'USER') {
           for (let i = 0; i < this.dataSet.length; i++) {
             if (this.dataSet[i].user.id === currentUser.id) {
@@ -184,10 +185,13 @@ export class ListDocsComponent implements OnInit {
           }
         }
 
-        this.isLoading = false;
+        
       } catch (err) {
+        console.log(err)
+        this.isLoading = false;
         return;
       }
+      this.isLoading = false;
       return;
     }
     this.docsService.getAllDocs().subscribe((data) => {
@@ -196,29 +200,12 @@ export class ListDocsComponent implements OnInit {
       this.isLoading = false;
     });
   }
-  async acceptedDocs(id:string){
-    console.log(id)
-    try {
-      const response = await lastValueFrom(
-        this.http.patch('/document/approve/' + id, {is_approved:2})
-      );
-      console.log(response);
-    } catch (e) {
-     
-      return;
-    }
-    this.getAllDocumentByclass()
 
-  }
   
   role: boolean = false;
   currentUserId = localStorage.getItem('user_id');
   ngOnInit(): void {
-    console.log(this.route.snapshot.paramMap.get('isApproved'))
-    this.route.params.subscribe((routeParam)=>{
-      this.isApproved = +routeParam['isApproved'];
-     
-    })
+    
     this.getAllDocumentByclass();
 
     this.validateForm = this.fb.group({

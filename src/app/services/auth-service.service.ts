@@ -48,6 +48,14 @@ export class AuthService {
       })
     );
   }
+
+  updateStudentProfile(payload:{} , student_id:string): Observable<any> {
+    console.log(student_id)
+    return this.http.patch('/student/' , student_id , payload).pipe(catchError((err) => {
+      return of(err);
+    }))
+  }
+
   isLoggedIn() {
     console.log(localStorage.getItem('token'));
     return localStorage.getItem('token') != null;
@@ -73,7 +81,7 @@ export class AuthService {
     });
 
     return this.httpOverride.get<{ access_token: string }>(
-      'https://2253-167-179-38-86.ap.ngrok.io/auth/refresh',
+      'https://bc76-167-179-38-86.ap.ngrok.io/auth/refresh',
       { headers: headers }
     );
   }
@@ -87,9 +95,9 @@ export class AuthService {
     var logginToken = localStorage.getItem('token') || '';
     try {
       const base64Url = logginToken.split('.')[1];
-      if (!base64Url || base64Url.length % 4 > 0) {
-        throw new Error();
-      }
+      // if (!base64Url || base64Url.length % 4 > 0) {
+      //   throw new Error();
+      // }
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
       const decodedToken = JSON.parse(atob(base64));
      
@@ -110,8 +118,9 @@ export class AuthService {
     return this.http.post('/profile', {});
   }
 
-  getCurrentUser(): Observable<any> {
-    return this.http.post('/user/me', { id: localStorage.getItem('user_id') });
+  getCurrentUser(id:string): Observable<any> {
+
+    return this.http.post('/user/me', { id:id });
   }
   logout() {
     this.http.post('auth/logout', { userId: localStorage.getItem('userId') });

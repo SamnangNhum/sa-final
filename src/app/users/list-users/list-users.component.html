@@ -1,28 +1,32 @@
 <div nz-row nzWidth="100%">
   <div nz-col class="users">
     <div class="table-operation">
-      <nz-space [nzSize]="16">
-     
-        <button *nzSpaceItem nz-button nzType="default"  nzSize="large" nzTrigger="click" nz-dropdown [nzDropdownMenu]="filter">
-          Select By Role
-          <span nz-icon nzType="down"></span>
-        </button>
-   
-
-      </nz-space>
+      <nz-space [nzSize]="16"> </nz-space>
       <nz-space>
         <nz-input-group nzSearch nzSize="large">
-          <input type="text" nz-input placeholder="Input Docs" [(ngModel)]="inputValue" (input)="onInput($event)"
-            class="search-box" />
-
+          <input
+            type="text"
+            nz-input
+            placeholder="Search User"
+            [(ngModel)]="inputValue"
+            (input)="onInput($event)"
+            class="search-box"
+          />
         </nz-input-group>
         <ng-template #suffixIconSearch>
           <i nz-icon nzType="search"></i>
         </ng-template>
       </nz-space>
     </div>
-    <nz-table #fixedTable [nzFrontPagination]="false" [nzLoading]="isLoading" [nzScroll]="{ x: '768px'}"
-      (nzPageIndexChange)="pageIndexChange($event)" [nzData]="dataSet" class="driver-table">
+    <nz-table
+      #fixedTable
+  
+      [nzLoading]="isLoading"
+      [nzScroll]="{ x: '768px' }"
+
+      [nzData]="dataSet"
+      class="driver-table"
+    >
       <thead>
         <tr>
           <th translate nzWidth="20%" nzLeft>Name</th>
@@ -37,35 +41,48 @@
         <tr *ngFor="let data of fixedTable.data; let i = index">
           <td nzLeft>{{ data.full_name_kh }}</td>
           <td>{{ data.email }}</td>
-          <td>{{ data.sex}}</td>
+          <td>{{ data.sex }}</td>
           <td>{{ data.phone_number }}</td>
           <td>
             <nz-space [nzSize]="10">
-              <button *nzSpaceItem nz-button nzType="primary" (click)="showModal()" innerHTML="Edit">
+              <button
+                *nzSpaceItem
+                nz-button
+                nzType="primary"
+                (click)="showModal(data.user.id)"
+                innerHTML="Edit"
+              >
                 Edit
               </button>
-            
-              <button *nzSpaceItem nz-button (click)="deleteUser(data.user.id , data.id)" innerHTML="Delete">
+
+              <button
+                *nzSpaceItem
+                nz-button
+                (click)="deleteUser(data.user.id, data.id)"
+                innerHTML="Delete"
+              >
                 Delete
               </button>
-
             </nz-space>
           </td>
         </tr>
-
       </tbody>
-
     </nz-table>
-    <nz-pagination (nzPageIndexChange)="pageIndexChange($event)" [nzPageIndex]="1"
-      [nzTotal]="totalUser"></nz-pagination>
+
   </div>
 </div>
 
-
 <!-- Modal Popup -->
-<nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()" nzWidth="968px" [nzOkText]="null" [nzCancelText]="null" nzWidth="968px">
+<nz-modal
+  [(nzVisible)]="isVisible"
+  (nzOnCancel)="handleCancel()"
+  nzWidth="968px"
+  [nzOkText]="null"
+  [nzCancelText]="null"
+  nzWidth="968px"
+>
   <ng-container *nzModalContent>
-    <app-edit [isView]="isView" ></app-edit>
+    <edit-profile [editUser]="editUser" [userId]="userId"></edit-profile>
   </ng-container>
 </nz-modal>
 <!-- Dropdown item -->

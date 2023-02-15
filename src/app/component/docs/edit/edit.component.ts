@@ -90,7 +90,7 @@ export class EditComponent implements OnInit, OnChanges {
       docSource: this.dataShare.source !== null ? this.dataShare.source.id : '',
       docCategory:
         this.dataShare.document_category !== null
-          ? this.dataShare.document_category
+          ? this.dataShare.document_category.id
           : '',
       docDate: docDate,
     });

@@ -48,7 +48,7 @@ export class TokenInterceptorService implements HttpInterceptor {
   }
   addTokenHeader(request: HttpRequest<any>, token: any) {
     return request.clone({
-      url: 'https://2253-167-179-38-86.ap.ngrok.io' + request.url,
+      url: 'https://bc76-167-179-38-86.ap.ngrok.io' + request.url,
       setHeaders: {
         'ngrok-skip-browser-warning': 'any',
         Authorization: 'bearer ' + token,

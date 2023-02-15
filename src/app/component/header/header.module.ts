@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SearchComponent } from './search/search.component';
+
 import { RightComponent } from './right/right.component';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzGridModule } from 'ng-zorro-antd/grid';
@@ -15,7 +15,7 @@ import { ProfileModule } from 'src/app/users/profile-users/profile.module';
 
 
 @NgModule({
-  declarations: [SearchComponent , RightComponent],
+  declarations: [ RightComponent],
   imports: [
     CommonModule,
     NzInputModule,
@@ -30,7 +30,7 @@ import { ProfileModule } from 'src/app/users/profile-users/profile.module';
     ProfileModule
   ],
   exports:[
-    SearchComponent,
+
     RightComponent
   ]
 })

@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
-import {  lastValueFrom,  } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { AuthService } from 'src/app/services/auth-service.service';
 import { DocsService } from 'src/app/services/docs.service';
 
@@ -45,13 +45,13 @@ export class AddNewDocsComponent implements OnInit {
   async submitForm(e: Event): Promise<void> {
     e.preventDefault();
     this.uploading = true;
-    let currentUser: any = []
+    let currentUser: any = [];
     try {
-      currentUser = await lastValueFrom(this.authService.getCurrentUser()) 
-    }catch(err){
-      return ;
+      currentUser = await lastValueFrom(this.authService.getCurrentUser(localStorage.getItem('user_id') as string));
+    } catch (err) {
+      return;
     }
-    console.log(currentUser)
+
     const docObj = {
       title: this.validateForm.value.docName,
       ref_number: this.validateForm.value.docRef,
@@ -60,7 +60,7 @@ export class AddNewDocsComponent implements OnInit {
       source_id: this.validateForm.value.docSource,
       document_category_id: this.validateForm.value.docCategory,
       user_id: currentUser.id,
-      class_id:currentUser.student.class_id
+      class_id: currentUser.student.class.id,
     };
     let docId = '';
     try {
@@ -68,19 +68,15 @@ export class AddNewDocsComponent implements OnInit {
         this.http.post<{ id: string }>('/document', docObj)
       );
       docId = document.id;
-      
     } catch (err) {
-      console.log(err);
       return;
     }
-    if(currentUser.role === "ADMIN" || currentUser.role === "SUPER_ADMIN"){
+    if (currentUser.role === 'ADMIN' || currentUser.role === 'SUPER_ADMIN') {
       try {
         const response = await lastValueFrom(
-          this.http.patch('/document/approve/' + docId, {is_approved:2})
+          this.http.patch('/document/approve/' + docId, { is_approved: 2 })
         );
-        console.log(response);
       } catch (e) {
-       
         return;
       }
     }
@@ -104,8 +100,8 @@ export class AddNewDocsComponent implements OnInit {
         docType: '',
         docCategory: '',
         docSource: '',
-        docDate:'',
-      })
+        docDate: '',
+      });
       // if (this.validateForm.valid) {
       //   this.router.navigateByUrl('home');
       // }
@@ -114,16 +110,12 @@ export class AddNewDocsComponent implements OnInit {
       return;
     }
   }
-  
 
-  inputCategoryValue(value:string){
-    console.log(value);
+  inputCategoryValue(value: string) {
     return value;
   }
-  createCategory(){
-
-  }
-  noData:Boolean = false;
+  createCategory() {}
+  noData: Boolean = false;
   ngOnInit(): void {
     this.validateForm = this.fb.group({
       docRef: [null, [Validators.compose([Validators.required])]],
@@ -136,20 +128,17 @@ export class AddNewDocsComponent implements OnInit {
 
     this.docsService.getAllDocType().subscribe((data) => {
       this.docType = data;
-    
     });
     this.docsService.getAllDocSource().subscribe((data) => {
       this.docSource = data;
     });
     this.docsService.getAllDocCategory().subscribe((data) => {
-      console.log(data);
-      if(data.length == 0){
+      if (data.length == 0) {
         this.noData = true;
-        return ;
+        return;
       }
       this.noData = false;
       this.docCategory = data;
-      console.log(this.noData)
     });
   }
 }

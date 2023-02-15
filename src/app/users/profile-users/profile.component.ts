@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, of } from 'rxjs';
 import { AuthService } from 'src/app/services/auth-service.service';
 import { ClassService } from 'src/app/services/class.service';
 
@@ -13,20 +13,23 @@ import { ClassService } from 'src/app/services/class.service';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.less'],
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit , OnChanges {
+  @Input() editUser : boolean = false;
+  @Input() userId: string = '';
   isLoading: boolean = true;
   isUploading: boolean = false;
   validateForm!: FormGroup;
   fileList: NzUploadFile[] = [];
-
+  ngOnChanges(changes: SimpleChanges){
+    this.editUser = this.editUser;
+    this.userId = this.userId;
+  }
   constructor(
-    private router: Router,
     private fb: FormBuilder,
     private authService: AuthService,
     private classService: ClassService,
     private message: NzMessageService,
     private http: HttpClient,
-    private route: ActivatedRoute
   ) {}
   profilePic: any;
   getBase64 = (file: any): Promise<string | ArrayBuffer | null> =>
@@ -35,7 +38,6 @@ export class ProfileComponent implements OnInit {
       reader.readAsDataURL(file);
       reader.onload = () => {
         this.profilePic = reader.result as string;
-        console.log(this.profilePic);
         resolve(reader.result as string);
       };
       reader.onerror = (error) => reject(error);
@@ -43,7 +45,9 @@ export class ProfileComponent implements OnInit {
 
   uploadProfile() {}
   beforeUpload = (file: NzUploadFile): boolean => {
+
     this.fileList = this.fileList.concat(file);
+    console.log(this.fileList.length);
     this.getBase64(this.fileList[0]);
     return false;
   };
@@ -53,30 +57,24 @@ export class ProfileComponent implements OnInit {
     this.fileList = [];
     return false;
   };
-
+  users: any = [];
   async submitForm(e: Event): Promise<void> {
     e.preventDefault();
     this.isUploading = true;
-    const userPayload = {
-      email: this.validateForm.value.email,
-      password: this.validateForm.value.password,
-      role: this.validateForm.value.role,
-    };
-    let users: any = [];
-    try {
-      const user = await lastValueFrom(
-        this.authService.registerUser(userPayload)
-      );
-      users = user;
-    } catch (err) {
-      this.message.error('Invalid Email or Password');
-      return;
-    }
+  
+    // let users: any = [];
+    // try {
+    //   const user = await lastValueFrom(
+    //     this.authService.registerUser(userPayload)
+    //   );
+    //   users = user;
+    // } catch (err) {
+    //   this.message.error('Invalid Email or Password');
+    //   return;
+    // }
 
 
-    const userId = await this.authService.getUserRegisterToken(
-      users.access_token
-    );
+    const user = this.users
 
     const studentPayload = {
       full_name_en: this.validateForm.value.fullName,
@@ -87,35 +85,43 @@ export class ProfileComponent implements OnInit {
       phone_number: this.validateForm.value.phoneNumber,
       email: this.validateForm.value.email,
       student_id: this.validateForm.value.student,
-      user_id: userId.sub,
+      user_id: user.id,
     };
 
-    let student: any = [];
     try {
-      const response = await lastValueFrom(
-        this.authService.registerStudent(studentPayload)
+      await lastValueFrom(
+        this.authService.updateStudentProfile(studentPayload, user.student.id)
       );
-      student = response;
     } catch (err) {
       this.message.error('One or more fields are required');
       return;
     }
-
-    try {
-      const formData: any = new FormData();
-      await formData.append(
-        'file',
-        this.fileList[0],
-        this.fileList[0].filename
-      );
-      await formData.append('student_id', student.id);
-      await lastValueFrom(this.http.post('/profile', formData));
-    } catch (err) {
-      this.isUploading = false;
-
-      return;
+    if(this.fileList.length > 0){
+      try{
+        this.http.delete('/profile/' + this.users.profile.id)
+      } catch (err) {
+        this.message.error('Failed to update Profile')
+        return;
+      }
+      try {
+        const formData: any = new FormData();
+        await formData.append(
+          'file',
+          this.fileList[0],
+          this.fileList[0].filename
+        );
+        await formData.append('student_id', user.student.id);
+        await lastValueFrom(this.http.post('/profile', formData));
+      } catch (err) {
+        this.isUploading = false;
+  
+        return;
+      }
+      this.getCurrentUser()
+      this.isUploading = true;
     }
-    this.message.success('Successfully registered');
+  
+    this.message.success('Successfully update');
     this.isUploading = false;
   }
   classData: any = [];
@@ -129,12 +135,21 @@ export class ProfileComponent implements OnInit {
     }
   }
   getCurrentUser(){
-    
-    this.authService.getCurrentUser().subscribe((data)=>{
-      this.http.get('/profile/' + data.student.profile.id,{responseType: 'blob'}).subscribe((response)=>{
-        this.getBase64(response);
-
-      })
+    let id: string = '';
+    if(this.editUser){
+      id = this.userId;
+    } else {
+      id = localStorage.getItem('user_id') as string;
+    }
+    this.authService.getCurrentUser(id).subscribe((data)=>{
+      this.users = data
+      if(data.student.profile !== null){
+        this.http.get('/profile/' + data.student.profile.id,{responseType: 'blob'}).subscribe((response)=>{
+          this.getBase64(response);
+  
+        })
+      }
+      
       console.log(data);
       this.validateForm.setValue({
         email:data.email,
