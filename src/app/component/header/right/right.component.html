@@ -1,5 +1,6 @@
 <div class="header-right">
   <nz-avatar
+  [nzSrc]="profilePic"
     nzIcon="user"
     nz-dropdown
     [nzDropdownMenu]="accountMenu"
@@ -39,7 +40,7 @@
 
 <nz-dropdown-menu #accountMenu="nzDropdownMenu">
   <div class="header">
-    <nz-avatar nzIcon="user" nzSize="large"></nz-avatar>
+    <nz-avatar [nzSrc]="profilePic" nzIcon="user" nzSize="large"></nz-avatar>
     <div>
       <div>{{users.email}}</div>
       <div style="font-weight:bold">{{users.role}}</div>

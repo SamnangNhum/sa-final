@@ -51,7 +51,7 @@ export class AuthService {
 
   updateStudentProfile(payload:{} , student_id:string): Observable<any> {
     console.log(student_id)
-    return this.http.patch('/student/' , student_id , payload).pipe(catchError((err) => {
+    return this.http.patch('/student/' + student_id , payload).pipe(catchError((err) => {
       return of(err);
     }))
   }

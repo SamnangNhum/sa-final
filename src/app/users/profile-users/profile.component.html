@@ -124,13 +124,13 @@
     
         <div nz-col [nzSpan]="12">
           <nz-form-item>
-            <nz-form-label nzRequired nzFor="role" class="label-style" [nzSpan]="24">Role
+            <nz-form-label nzRequired nzFor="role" class="label-style" [nzSpan]="24" >Role
             </nz-form-label>
 
             <nz-form-control>
               
                 <nz-form-control>
-                  <nz-select nzSize="large" id="role" formControlName="role" nzPlaceHolder="Select roles">
+                  <nz-select nzSize="large" id="role" formControlName="role" nzPlaceHolder="Select roles" [nzDisabled]="true">
                     <nz-option nzValue="ADMIN" nzLabel="Admin"></nz-option>
                     <nz-option nzValue="USER" nzLabel="User"></nz-option>
                   </nz-select>
@@ -147,7 +147,7 @@
             <nz-form-control>
        
                 <nz-form-control>
-                  <nz-select nzSize="large" id="class" formControlName="class" nzPlaceHolder="Select classroom">
+                  <nz-select nzSize="large" id="class" formControlName="class" nzPlaceHolder="Select classroom" [nzDisabled]="true">
                     <nz-option nzValue="{{data.id}}" nzLabel="{{data.name}}" *ngFor="let data of classData"></nz-option>
                   
                   </nz-select>
